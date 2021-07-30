@@ -1,0 +1,6 @@
+[submodule "ui"]
+	path = ui
+	url = git@github.com:saltwalks/thoth-ui.git
+[submodule "mock"]
+	path = mock
+	url = git@github.com:saltwalks/thoth-mock.git
