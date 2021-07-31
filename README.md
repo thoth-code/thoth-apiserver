@@ -1,5 +1,4 @@
-# Thoth
-The Pyramid of Open Knowledge  
+# Thoth : The Pyramid of Open Knowledge  
 
 ## Contributers
 1. haeramkeem   FE part
