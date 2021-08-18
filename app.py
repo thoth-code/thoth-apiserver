@@ -1,14 +1,11 @@
-from flask import Flask
-from bson.json_util import dumps
-import pymongo
+from flask import Flask, render_template
 
-app = Flask(__name__)
-
-conn = pymongo.MongoClient("localhost", 27017)
-db = conn.thoth_db
-col = db.postit
-
-@app.route('/all', methods=['GET'])
-def get():
-    data = list(col.find())
-    return dumps(data, ensure_ascii=False)
+def page_not_found(e):
+    return render_template('index.html'), 404
+    
+def create_app():
+    app = Flask(__name__)
+    app.register_error_handler(404, page_not_found)
+    import blueprint
+    app.register_blueprint(blueprint.bp)
+    return app
