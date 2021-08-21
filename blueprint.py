@@ -70,3 +70,8 @@ def update():
     result = col.update_one({'_id': ObjectId(nid)}, {"$set":postit})
     return '{"error":null}'
 
+@bp.route('/note/<nid>', methods=['DELETE'])
+def delete(nid):
+    col = db.postit    
+    col.delete_one({'_id': ObjectId(nid)})
+    return '{"error":null}'
