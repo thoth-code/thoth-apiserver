@@ -1,6 +1,6 @@
 from flask import Blueprint, request, make_response
 from bson.json_util import dumps
-import pymongo, jwt
+import pymongo, jwt, hashlib
 
 bp = Blueprint('main', __name__, url_prefix='/api')
 
@@ -24,18 +24,33 @@ def post():
     return '{"error":null}'
 
 @bp.route('/signin', methods=['POST'])
-def login():
+def signin():
     col = db.user
+    m = hashlib.sha256()
     user = {}
     user['email'] = request.form['email']
-    user['password'] = request.form['password']
+    pwd = request.form['password']
+    m.update(pwd.encode('utf-8'))
+    user['password'] = m.hexdigest()
     result = col.find_one(user)
     if result:
         data = {}
         data['email'] = user['email']
         encoded = jwt.encode(data, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithm='HS256')
-        resp = make_response("Login successful.")
+        resp = make_response('{"error":null}')
         resp.set_cookie('accessToken', encoded)
         return resp
     else:
-        return 'User not found.'
+        return '{"error":"UserNotFound"}'
+
+@bp.route('/signup', methods=['POST'])
+def signup():
+    col = db.user
+    m = hashlib.sha256()
+    user = {}
+    user['email'] = request.form['email']
+    pwd = request.form['password']
+    m.update(pwd.encode('utf-8'))
+    user['password'] = m.hexdigest()
+    col.insert_one(user)
+    return '{"error":null}'
