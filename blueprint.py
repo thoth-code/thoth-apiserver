@@ -1,5 +1,6 @@
 from flask import Blueprint, request, make_response
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 import pymongo, jwt, hashlib
 
 bp = Blueprint('main', __name__, url_prefix='/api')
@@ -17,9 +18,11 @@ def get():
 def post():
     col = db.postit
     postit = {}
+    postit['uid'] = request.form['uid']
     postit['title'] = request.form['title']
     postit['code'] = request.form['code']
     postit['tag'] = request.form['tag']
+    postit['ref'] = request.form['ref']
     col.insert_one(postit)
     return '{"error":null}'
 
@@ -54,3 +57,16 @@ def signup():
     user['password'] = m.hexdigest()
     col.insert_one(user)
     return '{"error":null}'
+
+@bp.route('/note', methods=['PUT'])
+def update():
+    col = db.postit
+    postit = {}
+    nid = request.form['nid']
+    postit['title'] = request.form['title']
+    postit['code'] = request.form['code']
+    postit['tag'] = request.form['tag']
+    postit['ref'] = request.form['ref']
+    result = col.update_one({'_id': ObjectId(nid)}, {"$set":postit})
+    return '{"error":null}'
+
