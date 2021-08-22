@@ -21,7 +21,7 @@ def get():
     data = list(col.find())
     return dumps(data, ensure_ascii=False)
 
-@bp.route('/notes', methods=['POST'])
+@bp.route('/note', methods=['POST'])
 def post():
     col = db.user
     encoded = request.cookies.get('accessToken')
@@ -57,7 +57,7 @@ def signin():
 def signup():
     col = db.user
     m = hashlib.sha256()
-    user = request.get_json() 
+    user = request.get_json()
     pwd = user['password']
     m.update(pwd.encode('utf-8'))
     user['password'] = m.hexdigest()
