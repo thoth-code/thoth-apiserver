@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response, send_from_directory, jsonify
+from flask import Blueprint, request, make_response
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 import pymongo, jwt, hashlib
