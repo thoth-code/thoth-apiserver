@@ -10,20 +10,20 @@ db = conn.thoth_db
 
 @bp.route('/notes', methods=['GET'])
 def get():
-    col = db.postit
+    col = db.note
     data = list(col.find())
     return dumps(data, ensure_ascii=False)
 
 @bp.route('/notes', methods=['POST'])
 def post():
-    col = db.postit
-    postit = {}
-    postit['uid'] = request.form['uid']
-    postit['title'] = request.form['title']
-    postit['code'] = request.form['code']
-    postit['tag'] = request.form['tag']
-    postit['ref'] = request.form['ref']
-    col.insert_one(postit)
+    col = db.note
+    note = {}
+    note['uid'] = request.form['uid']
+    note['title'] = request.form['title']
+    note['code'] = request.form['code']
+    note['tag'] = request.form['tag']
+    note['ref'] = request.form['ref']
+    col.insert_one(note)
     return dumps({'error':None})
 
 @bp.route('/signin', methods=['POST'])
@@ -58,18 +58,27 @@ def signup():
 
 @bp.route('/note', methods=['PUT'])
 def update():
-    col = db.postit
-    postit = {}
+    col = db.note
+    note = {}
     nid = request.form['nid']
-    postit['title'] = request.form['title']
-    postit['code'] = request.form['code']
-    postit['tag'] = request.form['tag']
-    postit['ref'] = request.form['ref']
-    result = col.update_one({'_id': ObjectId(nid)}, {"$set":postit})
-    return jsonify({"error":null})
+    note['title'] = request.form['title']
+    note['code'] = request.form['code']
+    note['tag'] = request.form['tag']
+    note['ref'] = request.form['ref']
+    result = col.update_one({'_id': ObjectId(nid)}, {"$set":note})
+    return dumps({'error':None})
 
 @bp.route('/note/<nid>', methods=['DELETE'])
 def delete(nid):
-    col = db.postit
+    col = db.note
     col.delete_one({'_id': ObjectId(nid)})
+    return dumps({'error':None})
+
+@bp.route('/myboard', methods=['POST'])
+def scrab():
+    col = db.note
+    nid = request.form['nid']
+    result = col.find_one({'_id': ObjectId(nid)})
+    col = db.scrab
+    col.insert(result)
     return dumps({'error':None})
