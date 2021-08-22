@@ -37,9 +37,7 @@ def signin():
     user['password'] = m.hexdigest()
     result = col.find_one(user)
     if result:
-        data = {}
-        data['email'] = user['email']
-        encoded = jwt.encode(data, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithm='HS256')
+        encoded = jwt.encode({'uid':str(result['_id'])}, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithm='HS256')
         resp = make_response('{"error":null}')
         resp.set_cookie('accessToken', encoded)
         return resp
