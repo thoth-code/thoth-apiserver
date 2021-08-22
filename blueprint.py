@@ -105,3 +105,9 @@ def unscrab(nid):
         return dumps({'error':None})
     else:
         return dumps({'error':'LoginNotVerified'})
+
+@bp.route('/myboard', methods=['GET'])
+def getcrab():
+    col = db.scrab
+    data = list(col.find())
+    return dumps(data, ensure_ascii=False)
