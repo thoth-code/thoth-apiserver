@@ -28,7 +28,7 @@ def post():
     decoded = jwt.decode(encoded, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithms=["HS256"])
     result = col.find_one({'_id': ObjectId(decoded['uid'])})
     if result:
-    col = db.note
+        col = db.note
         note = {}
         note['uid'] = decoded['uid']
         note['title'] = request.form['title']
