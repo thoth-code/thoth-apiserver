@@ -29,12 +29,8 @@ def post():
     result = col.find_one({'_id': ObjectId(decoded['uid'])})
     if result:
         col = db.note
-        note = {}
+        note = request.get_json()
         note['uid'] = decoded['uid']
-        note['title'] = request.form['title']
-        note['code'] = request.form['code']
-        note['tag'] = request.form['tag']
-        note['ref'] = request.form['ref']
         col.insert_one(note)
         return dumps({'error':None})
     else:
@@ -44,15 +40,14 @@ def post():
 def signin():
     col = db.user
     m = hashlib.sha256()
-    user = {}
-    user['email'] = request.form['email']
-    pwd = request.form['password']
+    user = request.get_json()
+    pwd = user['password']
     m.update(pwd.encode('utf-8'))
     user['password'] = m.hexdigest()
     result = col.find_one(user)
     if result:
         encoded = jwt.encode({'uid':str(result['_id'])}, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithm='HS256')
-        resp = make_response('{"error":null}')
+        resp = make_response('{"error": null}')
         resp.set_cookie('accessToken', encoded)
         return resp
     else:
@@ -62,9 +57,8 @@ def signin():
 def signup():
     col = db.user
     m = hashlib.sha256()
-    user = {}
-    user['email'] = request.form['email']
-    pwd = request.form['password']
+    user = request.get_json() 
+    pwd = user['password']
     m.update(pwd.encode('utf-8'))
     user['password'] = m.hexdigest()
     col.insert_one(user)
@@ -74,12 +68,8 @@ def signup():
 def update():
     if verify(db):
         col = db.note
-        note = {}
-        nid = request.form['nid']
-        note['title'] = request.form['title']
-        note['code'] = request.form['code']
-        note['tag'] = request.form['tag']
-        note['ref'] = request.form['ref']
+        note = request.get_json()
+        nid = note['nid']
         result = col.update_one({'_id': ObjectId(nid)}, {"$set":note})
         return dumps({'error':None})
     else:
@@ -98,7 +88,8 @@ def delete(nid):
 def scrab():
     if verify(db):
         col = db.note
-        nid = request.form['nid']
+        data = request.get_json()
+        nid = data['nid']
         result = col.find_one({'_id': ObjectId(nid)})
         col = db.scrab
         col.insert(result)
