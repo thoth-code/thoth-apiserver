@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response, send_from_directory
+from flask import Blueprint, request, make_response, send_from_directory, jsonify
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 import pymongo, jwt, hashlib
@@ -24,7 +24,7 @@ def post():
     postit['tag'] = request.form['tag']
     postit['ref'] = request.form['ref']
     col.insert_one(postit)
-    return '{"error":null}'
+    return dumps({'error':None})
 
 @bp.route('/signin', methods=['POST'])
 def signin():
@@ -44,7 +44,7 @@ def signin():
         resp.set_cookie('accessToken', encoded)
         return resp
     else:
-        return '{"error":"UserNotFound"}'
+        return dumps({'error':'UserNotFound'})
 
 @bp.route('/signup', methods=['POST'])
 def signup():
@@ -56,7 +56,7 @@ def signup():
     m.update(pwd.encode('utf-8'))
     user['password'] = m.hexdigest()
     col.insert_one(user)
-    return '{"error":null}'
+    return dumps({'error':None})
 
 @bp.route('/note', methods=['PUT'])
 def update():
@@ -68,10 +68,10 @@ def update():
     postit['tag'] = request.form['tag']
     postit['ref'] = request.form['ref']
     result = col.update_one({'_id': ObjectId(nid)}, {"$set":postit})
-    return '{"error":null}'
+    return jsonify({"error":null})
 
 @bp.route('/note/<nid>', methods=['DELETE'])
 def delete(nid):
     col = db.postit
     col.delete_one({'_id': ObjectId(nid)})
-    return '{"error":null}'
+    return dumps({'error':None})
