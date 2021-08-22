@@ -82,3 +82,9 @@ def scrab():
     col = db.scrab
     col.insert(result)
     return dumps({'error':None})
+
+@bp.route('/myboard/<nid>', methods=['DELETE'])
+def unscrab(nid):
+    col = db.scrab
+    col.delete_one({'_id': ObjectId(nid)})
+    return dumps({'error':None})
