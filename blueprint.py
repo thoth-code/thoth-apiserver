@@ -108,6 +108,13 @@ def unscrab(nid):
 
 @bp.route('/myboard', methods=['GET'])
 def getcrab():
-    col = db.scrab
-    data = list(col.find())
-    return dumps(data, ensure_ascii=False)
+    col = db.user
+    encoded = request.cookies.get('accessToken')
+    decoded = jwt.decode(encoded, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithms=["HS256"])
+    result = col.find_one({'_id': ObjectId(decoded['uid'])})
+    if result:
+        col = db.scrab
+        data = list(col.find({'uid': decoded['uid']}))
+        return dumps(data, ensure_ascii=False)
+    else:
+        return dumps({'error':'LoginNotVerified'})
