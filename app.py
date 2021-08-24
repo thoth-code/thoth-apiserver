@@ -1,10 +1,9 @@
 from flask import Flask
-import blueprint
-import os
+import controller, os
     
 def create_app():
     app = Flask(__name__, static_folder='ui/public', static_url_path='/ui/public')
-    app.register_blueprint(blueprint.bp)
+    app.register_blueprint(controller.bp)
     
     @app.route('/', defaults={'path': ''})
     @app.route('/<path:path>')
