@@ -24,8 +24,10 @@ def noteExists(nid):
     return data
 
 def scrabAlreadyExists(nid):
+    col = db.note
+    result = col.find_one({"_id": ObjectId(nid)})
     col = db.scrab
-    data = col.find_one({"_id": ObjectId(nid)})
+    data = col.find_one({"uid":result['uid'], "onid":str(result['_id'])})
     return data
 
 def emailAlreadyExists(email):
@@ -84,8 +86,15 @@ def getMynote():
 def postMynote(nid):
     col = db.note
     result = col.find_one({'_id': ObjectId(nid)})
+    data = {}
+    data['title'] = result['title']
+    data['code'] = result['code']
+    data['tag'] = result['tag']
+    data['ref'] = result['ref']
+    data['uid'] = getUid()
+    data['onid'] = str(result['_id'])
     col = db.scrab
-    col.insert(result)
+    col.insert(data)
 
 def deleteMynote(nid): 
     col = db.scrab
