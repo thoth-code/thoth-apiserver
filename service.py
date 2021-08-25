@@ -72,6 +72,6 @@ def deleteMynote(nid):
             models.deleteMynote(nid)
             return dumps({"error":None})
         else:
-            return dumps({"error":"NoteNotFoundException"})
+            return dumps({"error":"ScrabNotFoundException"})
     else:
         return dumps({"error":"VerificationException"})
