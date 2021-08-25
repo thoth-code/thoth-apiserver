@@ -6,14 +6,14 @@ def signin(user):
     if data:
         return data
     else:
-        return dumps({"error":"userNotFoundException"})
+        return dumps({"error":"UserNotFoundException"})
 
 def signup(user):
     if not models.emailAlreadyExists(user['email']):
         models.signup(user)
         return dumps({"error":None})
     else:
-        return dumps({"error":"emailAlreadyExistsException"})
+        return dumps({"error":"EmailAlreadyExistsException"})
 
 def getNotes():
     data = models.getNotes()
@@ -24,7 +24,7 @@ def postNote(note):
         models.postNote(note)
         return dumps({"error":None})
     else:
-        return dumps({"error":"loginFailedException"})
+        return dumps({"error":"VerificationException"})
 
 def updateNote(note):
     if models.verify():
@@ -32,9 +32,9 @@ def updateNote(note):
             models.updateNote(note)
             return dumps({"error":None})
         else:
-            return dumps({"error":"noteNotFoundException"})
+            return dumps({"error":"NoteNotFoundException"})
     else:
-        return dumps({"error":"loginFailedException"})
+        return dumps({"error":"VerificationException"})
 
 def deleteNote(nid):
     if models.verify():
@@ -42,16 +42,16 @@ def deleteNote(nid):
             models.deleteNote(nid)
             return dumps({"error":None})
         else:
-            return dumps({"error":"noteNotFoundException"})
+            return dumps({"error":"NoteNotFoundException"})
     else:
-        return dumps({"error":"loginFailedException"})
+        return dumps({"error":"VerificationException"})
 
 def getMynote():
     if models.verify():
         data = models.getMynote()
         return dumps(data, ensure_ascii=False)
     else:
-        return dumps({"error":"loginFailedException"})
+        return dumps({"error":"VerificationException"})
 
 def postMynote(nid):
     if models.verify():
@@ -60,11 +60,11 @@ def postMynote(nid):
                 models.postMynote(nid)
                 return dumps({"error":None})
             else:
-                return dumps({"error":"scrabAlreadyExistsException"})
+                return dumps({"error":"ScrabAlreadyExistsException"})
         else:
-            return dumps({"error":"noteNotFoundException"})
+            return dumps({"error":"NoteNotFoundException"})
     else:
-        return dumps({"error":"loginFailedException"})
+        return dumps({"error":"VerificationException"})
 
 def deleteMynote(nid):
     if models.verify():
@@ -72,6 +72,6 @@ def deleteMynote(nid):
             models.deleteMynote(nid)
             return dumps({"error":None})
         else:
-            return dumps({"error":"noteNotFoundException"})
+            return dumps({"error":"NoteNotFoundException"})
     else:
-        return dumps({"error":"loginFailedException"})
+        return dumps({"error":"VerificationException"})

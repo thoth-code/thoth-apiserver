@@ -90,7 +90,7 @@ def getMynote():
 
 def postMynote(nid):
     col = db.note
-    result = col.find_one({'_id': ObjectId(nid)})
+    result = col.find_one({"_id": ObjectId(nid)})
     data = {}
     data['title'] = result['title']
     data['code'] = result['code']
@@ -103,4 +103,4 @@ def postMynote(nid):
 
 def deleteMynote(nid): 
     col = db.scrab
-    col.delete_one({'_id': ObjectId(nid)})
+    col.delete_one({"_id": ObjectId(nid)})
