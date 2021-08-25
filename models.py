@@ -83,10 +83,11 @@ def delete_note(nid):
     col = db.note
     col.delete_one({"_id": ObjectId(nid)})
 
-def get_mynote():
+def get_mynote(param):
     col = db.scrab
     uid = get_uid()
-    data = list(col.find({"uid": uid}))
+    count = int(param.get('count'))*10
+    data = list(col.find({"uid": uid}).skip(count).limit(10))
     return data
 
 def post_mynote(nid):

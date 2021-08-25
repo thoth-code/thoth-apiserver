@@ -46,9 +46,9 @@ def delete_note(nid):
     else:
         return dumps({"error":"VerificationException"})
 
-def get_mynote():
+def get_mynote(param):
     if models.verify():
-        data = models.get_mynote()
+        data = models.get_mynote(param)
         return dumps(data, ensure_ascii=False)
     else:
         return dumps({"error":"VerificationException"})

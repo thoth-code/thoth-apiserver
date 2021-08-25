@@ -40,7 +40,8 @@ def delete_note(nid):
 
 @bp.route('/myboard', methods=['GET'])
 def get_mynote():
-    data = service.get_mynote()
+    param = request.args
+    data = service.get_mynote(param)
     return data
 
 @bp.route('/myboard', methods=['POST'])
