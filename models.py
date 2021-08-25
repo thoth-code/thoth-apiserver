@@ -63,9 +63,10 @@ def signup(user):
     user['password'] = m.hexdigest()
     col.insert_one(user)
 
-def getNotes():
+def getNotes(param):
     col = db.note
-    data = list(col.find())
+    count = int(param.get('count'))*10
+    data = list(col.find().skip(count).limit(10))
     return data
 
 def postNote(note):
@@ -101,6 +102,6 @@ def postMynote(nid):
     col = db.scrab
     col.insert(data)
 
-def deleteMynote(nid): 
+def deleteMynote(nid):
     col = db.scrab
     col.delete_one({"_id": ObjectId(nid)})

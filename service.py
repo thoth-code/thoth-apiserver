@@ -15,8 +15,8 @@ def signup(user):
     else:
         return dumps({"error":"EmailAlreadyExistsException"})
 
-def getNotes():
-    data = models.getNotes()
+def getNotes(param):
+    data = models.getNotes(param)
     return dumps(data, ensure_ascii=False)
 
 def postNote(note):

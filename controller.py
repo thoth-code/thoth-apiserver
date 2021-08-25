@@ -17,7 +17,8 @@ def signup():
 
 @bp.route('/notes', methods=['GET'])
 def getNotes():
-    data = service.getNotes()
+    param = request.args
+    data = service.getNotes(param)
     return data
 
 @bp.route('/note', methods=['POST'])
