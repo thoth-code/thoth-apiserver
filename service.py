@@ -1,32 +1,32 @@
 from bson.json_util import dumps
 import models
 
-def signin(user):
+def sign_in(user):
     data = models.signin(user)
     if data:
         return data
     else:
         return dumps({"error":"UserNotFoundException"})
 
-def signup(user):
+def sign_up(user):
     if not models.emailAlreadyExists(user['email']):
         models.signup(user)
         return dumps({"error":None})
     else:
         return dumps({"error":"EmailAlreadyExistsException"})
 
-def getNotes(param):
+def get_notes(param):
     data = models.getNotes(param)
     return dumps(data, ensure_ascii=False)
 
-def postNote(note):
+def post_note(note):
     if models.verify():
         models.postNote(note)
         return dumps({"error":None})
     else:
         return dumps({"error":"VerificationException"})
 
-def updateNote(note):
+def update_note(note):
     if models.verify():
         if models.noteExists(note['nid']):
             models.updateNote(note)
@@ -36,7 +36,7 @@ def updateNote(note):
     else:
         return dumps({"error":"VerificationException"})
 
-def deleteNote(nid):
+def delete_note(nid):
     if models.verify():
         if models.noteExists(nid):
             models.deleteNote(nid)
@@ -46,14 +46,14 @@ def deleteNote(nid):
     else:
         return dumps({"error":"VerificationException"})
 
-def getMynote():
+def get_mynote():
     if models.verify():
         data = models.getMynote()
         return dumps(data, ensure_ascii=False)
     else:
         return dumps({"error":"VerificationException"})
 
-def postMynote(nid):
+def post_mynote(nid):
     if models.verify():
         if models.noteExists(nid):
             if not models.scrabAlreadyExists(nid):
@@ -66,7 +66,7 @@ def postMynote(nid):
     else:
         return dumps({"error":"VerificationException"})
 
-def deleteMynote(nid):
+def delete_mynote(nid):
     if models.verify():
         if models.scrabExists(nid):
             models.deleteMynote(nid)

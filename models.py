@@ -12,35 +12,35 @@ def verify():
     result = col.find_one({'_id': ObjectId(decoded['uid'])})
     return result
 
-def getUid():
+def get_uid():
     col = db.user
     encoded = request.cookies.get('accessToken')
     decoded = jwt.decode(encoded, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithms=["HS256"])
     return decoded['uid']
 
-def noteExists(nid):
+def note_exists(nid):
     col = db.note
     data = col.find_one({"_id": ObjectId(nid)})
     return data
 
-def scrabExists(nid):
+def scrab_exists(nid):
     col = db.scrab
     data = col.find_one({"_id": ObjectId(nid)})
     return data
 
-def scrabAlreadyExists(nid):
+def scrab_already_exists(nid):
     col = db.note
     result = col.find_one({"_id": ObjectId(nid)})
     col = db.scrab
     data = col.find_one({"uid":getUid(), "onid":str(result['_id'])})
     return data
 
-def emailAlreadyExists(email):
+def email_already_exists(email):
     col = db.user
     data = col.find_one({"email": email})
     return data
 
-def signin(user):
+def sign_in(user):
     col = db.user
     m = hashlib.sha256()
     pwd = user['password']
@@ -55,7 +55,7 @@ def signin(user):
     else:
         return None
 
-def signup(user):
+def sign_up(user):
     col = db.user
     m = hashlib.sha256()
     pwd = user['password']
@@ -63,33 +63,33 @@ def signup(user):
     user['password'] = m.hexdigest()
     col.insert_one(user)
 
-def getNotes(param):
+def get_notes(param):
     col = db.note
     count = int(param.get('count'))*10
     data = list(col.find().skip(count).limit(10))
     return data
 
-def postNote(note):
+def post_note(note):
     col = db.note
     note['uid'] = getUid()
     col.insert_one(note)
 
-def updateNote(note):
+def update_note(note):
     col = db.note
     nid = note['nid']
     result = col.update_one({"_id": ObjectId(nid)}, {"$set":note})
 
-def deleteNote(nid):
+def delete_note(nid):
     col = db.note
     col.delete_one({"_id": ObjectId(nid)})
 
-def getMynote():
+def get_mynote():
     col = db.scrab
     uid = getUid()
     data = list(col.find({"uid": uid}))
     return data
 
-def postMynote(nid):
+def post_mynote(nid):
     col = db.note
     result = col.find_one({"_id": ObjectId(nid)})
     data = {}
@@ -102,6 +102,6 @@ def postMynote(nid):
     col = db.scrab
     col.insert(data)
 
-def deleteMynote(nid):
+def delete_mynote(nid):
     col = db.scrab
     col.delete_one({"_id": ObjectId(nid)})
