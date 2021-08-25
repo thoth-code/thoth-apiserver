@@ -23,11 +23,16 @@ def noteExists(nid):
     data = col.find_one({"_id": ObjectId(nid)})
     return data
 
+def scrabExists(nid):
+    col = db.scrab
+    data = col.find_one({"_id": ObjectId(nid)})
+    return data
+
 def scrabAlreadyExists(nid):
     col = db.note
     result = col.find_one({"_id": ObjectId(nid)})
     col = db.scrab
-    data = col.find_one({"uid":result['uid'], "onid":str(result['_id'])})
+    data = col.find_one({"uid":getUid(), "onid":str(result['_id'])})
     return data
 
 def emailAlreadyExists(email):

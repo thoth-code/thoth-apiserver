@@ -68,7 +68,8 @@ def postMynote(nid):
 
 def deleteMynote(nid):
     if models.verify():
-        if models.noteExists(nid):
+        if models.scrabExists(nid):
+            models.deleteMynote(nid)
             return dumps({"error":None})
         else:
             return dumps({"error":"noteNotFoundException"})
