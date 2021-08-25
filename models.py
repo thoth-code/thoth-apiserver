@@ -50,7 +50,7 @@ def signin(user):
     if result:
         encoded = jwt.encode({"uid":str(result['_id'])}, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithm='HS256')
         resp = make_response('{"error": null}')
-        resp.set_cookie('accessToken', encoded)
+        resp.set_cookie('accessToken', encoded, max_age=60*60*2)
         return resp
     else:
         return None
