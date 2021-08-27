@@ -8,15 +8,21 @@ db = conn.thoth_db
 def verify():
     col = db.user
     encoded = request.cookies.get('accessToken')
-    decoded = jwt.decode(encoded, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithms=["HS256"])
-    result = col.find_one({'_id': ObjectId(decoded['uid'])})
-    return result
+    if encoded:
+        decoded = jwt.decode(encoded, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithms=["HS256"])
+        result = col.find_one({'_id': ObjectId(decoded['uid'])})
+        return result
+    else:
+        return None
 
 def get_uid():
     col = db.user
     encoded = request.cookies.get('accessToken')
-    decoded = jwt.decode(encoded, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithms=["HS256"])
-    return decoded['uid']
+    if encoded:
+        decoded = jwt.decode(encoded, 'JEfWefI0E1qlnIz06qmob7cZp5IzH/i7KwOI2xqWfhE=', algorithms=["HS256"])
+        return decoded['uid']
+    else:
+        return None
 
 def note_exists(nid):
     col = db.note
