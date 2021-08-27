@@ -66,6 +66,16 @@ def post_mynote(nid):
     else:
         return dumps({"error":"VerificationException"})
 
+def update_mynote(note):
+    if models.verify():
+        if models.scrab_exists(note['nid']):
+            models.update_mynote(note)
+            return dumps({"error":None})
+        else:
+            return dumps({"error":"ScrabNotFoundException"})
+    else:
+        return dumps({"error":"VerificationException"})
+
 def delete_mynote(nid):
     if models.verify():
         if models.scrab_exists(nid):

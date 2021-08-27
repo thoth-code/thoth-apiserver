@@ -109,6 +109,15 @@ def post_mynote(nid):
     col = db.scrab
     col.insert(data)
 
+def update_mynote(note):
+    col = db.scrab
+    nid = note['nid']
+    result = col.update_one({"_id": ObjectId(nid)}, {"$set":note})
+    if result:
+        print("good")
+    else:
+        print("bad")
+        
 def delete_mynote(nid):
     col = db.scrab
     col.delete_one({"_id": ObjectId(nid)})

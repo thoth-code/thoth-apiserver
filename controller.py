@@ -51,6 +51,12 @@ def post_mynote():
     data = service.post_mynote(nid)
     return data
 
+@bp.route('/myboard', methods=['PUT'])
+def update_mynote():
+    note = request.get_json()
+    data = service.update_mynote(note)
+    return data
+
 @bp.route('/myboard/<nid>', methods=['DELETE'])
 def delete_mynote(nid):
     data = service.delete_mynote(nid)
