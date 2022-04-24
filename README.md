@@ -1,5 +1,3 @@
-# Thoth : The Pyramid of Open Knowledge  
+# Thoth API Endpoint Server
 
-## Contributers
-1. haeramkeem   FE part
-2. oponeuser7   BE part
+Backend API endpoint server for Thoth-code
